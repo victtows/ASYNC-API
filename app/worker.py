@@ -1,0 +1,1 @@
+from app.task import celery_app
