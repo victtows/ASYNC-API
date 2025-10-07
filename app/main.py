@@ -23,7 +23,7 @@ def process_and_email(data: str, email: str):
     task = process_data_and_send_email.delay(data, email)
     return {"message": "Processamento iniciado, você receberá um email quando concluído.", "task_id": task.id}
 
-@app.get("/progress-with-progress")
+@app.get("/process-with-progress")
 def progress_with_progress():
     task = long_task_with_progress.delay()
     return {"message": "Tarefa com progresso iniciada.", "task_id": task.id}
@@ -32,9 +32,9 @@ def progress_with_progress():
 def task_status(task_id: str):
     result = AsyncResult(task_id, app=celery_app)
     if result.state == 'PENDING':
-        return {"state": result.state, "progress": "0"}
+        return {"state": result.state, "progress": 0}
     if result.state == 'PROGRESS':
         return {"state": result.state, "progress": result.info.get("percent", 0)}
     if result.state == 'SUCCESS':
-        return {"state": result.state, "result": result.result}
+        return {"state": result.state, "result": result.info}
     return {"state": result.state, "info": str(result.info)}
