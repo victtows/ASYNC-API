@@ -24,7 +24,7 @@ def process_and_email(data: str, email: str):
     return {"message": "Processamento iniciado, você receberá um email quando concluído.", "task_id": task.id}
 
 @app.get("/process-with-progress")
-def progress_with_progress():
+def process_with_progress():
     task = long_task_with_progress.delay()
     return {"message": "Tarefa com progresso iniciada.", "task_id": task.id}
 
